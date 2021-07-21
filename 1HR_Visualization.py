@@ -3,8 +3,11 @@ import matplotlib.pyplot as plt
 
 # Load data
 data = pd.read_csv("/Users/brendanmckenna/Dropbox/Projects/HR_DataScientists_JobChange/Data/aug_train.csv")
+# Reviewing the data
 data.info()
 data.isnull().sum()
+data.describe()
+data.head()
 
 # One-off Visualizations
 ## Gender (matplotlib)
@@ -43,7 +46,7 @@ fig = px.pie(
 )
 fig.update_traces(hoverinfo='value', textinfo='label+percent').show()
 
-# Prints variable count + percentage and creates a circle graph to illustrate
+# Displays variable count and percentage
 def cat_summary(dataframe, col_name, plot=False):
     df = pd.DataFrame(
         {col_name:data[col_name].value_counts(), "Ratio": 100* data[col_name].value_counts() / len(data)})
@@ -53,7 +56,6 @@ def cat_summary(dataframe, col_name, plot=False):
         plt.figure(figsize=(7,5))
         plt.pie (df["Ratio"], labels=df.index, labeldistance=1.15, wedgeprops = { 'linewidth' : 1, 'edgecolor' : 'white' }, autopct = "%1.1f%%", pctdistance=0.85, textprops={'fontsize': 10})
             
-        #draw circle
         centre_circle = plt.Circle((0,0),0.70,fc='white')
         fig = plt.gcf()
         fig.gca().add_artist(centre_circle)
@@ -66,7 +68,9 @@ graph_cols = [col for col in data.columns if data[col].nunique() < 40]
 for col in graph_cols:
     cat_summary (data, col, plot=True)
 
-# which variables have the highest number of individuals interested in a job change
+# Showing the variables with the most people interested in a job change
+import seaborn as sns
+
 def target_summary(dataframe, target, plot=False):
     df = pd.DataFrame({"TARGET_MEAN": dataframe[target].mean(),
                         "TARGET_MEDIAN": dataframe[target].median(),
@@ -80,6 +84,5 @@ def target_summary(dataframe, target, plot=False):
         print("="*50)
 
 cats = [col for col in data.columns if (data[col].nunique() < 20)]
-
 for col in cats:
     target_summary(data, "target", plot=True)
