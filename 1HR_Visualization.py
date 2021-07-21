@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 # Load data
 data = pd.read_csv("/Users/brendanmckenna/Dropbox/Projects/HR_DataScientists_JobChange/Data/aug_train.csv")
 # Reviewing the data
@@ -69,20 +70,6 @@ for col in graph_cols:
     cat_summary (data, col, plot=True)
 
 # Showing the variables with the most people interested in a job change
-import seaborn as sns
-
-def target_summary(dataframe, target, plot=False):
-    df = pd.DataFrame({"TARGET_MEAN": dataframe[target].mean(),
-                        "TARGET_MEDIAN": dataframe[target].median(),
-                        "COUNT": dataframe[target].count()})
-    print(df)
-    if plot==True:
-        sns.barplot(x=df.index, y=df["TARGET_MEAN"])
-        plt.xticks(rotation=45)
-        plt.xlabel(df.index.name.upper())
-        plt.show();
-        print("="*50)
-
 cats = [col for col in data.columns if (data[col].nunique() < 20)]
 for col in cats:
-    target_summary(data, "target", plot=True)
+    Analysis.target_summary(data, "target", plot=True)
